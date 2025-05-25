@@ -15,7 +15,7 @@ def instructions():
     print('''
  *** Instructions ***   
 You can choose how many questions you want to be tested on
-
+Answers are rounded to the nearest whole number
 The quiz includes:
   - Addition
   - Subtraction
@@ -78,7 +78,6 @@ if string_checker("Do you want to see the instructions? ") == "yes":
     instructions()
 
 mode = "regular"
-score = 0
 correct_count = 0
 wrong_count = 0
 questions_asked = 0
