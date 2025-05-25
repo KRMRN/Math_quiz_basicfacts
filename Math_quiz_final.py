@@ -81,7 +81,7 @@ mode = "regular"
 score = 0
 correct_count = 0
 wrong_count = 0
-rounds_played = 0
+questions_asked = 0
 quiz_history = []
 
 # Ask how many rounds the user wants
@@ -94,11 +94,11 @@ if num_rounds == "infinite":
 selected_ops = get_operations()
 
 # quiz loop
-while rounds_played < num_rounds:
+while questions_asked < num_rounds:
     if mode == "infinite":
-        print(f"\nRound {rounds_played + 1} (infinite mode)")
+        print(f"\nRound {questions_asked + 1} (infinite mode)")
     else:
-        print(f"\nRound {rounds_played + 1} of {num_rounds}")
+        print(f"\nRound {questions_asked + 1} of {num_rounds}")
 
     question, correct_answer = generate_question(selected_ops)
     print(f"What is {question}? (Type 'xxx' to quit)")
@@ -124,7 +124,7 @@ while rounds_played < num_rounds:
         wrong_count += 1
         result = "Incorrect"
 
-    rounds_played += 1
+    questions_asked += 1
     quiz_history.append({
         "question": question,
         "your_answer": user_answer,
@@ -134,17 +134,12 @@ while rounds_played < num_rounds:
 
 # quiz summary
 print("\nQuiz Summary:")
-print(f"Total Questions Answered: {rounds_played}")
+print(f"Total Questions Answered: {questions_asked}")
 print(f"Correct: {correct_count} | Incorrect: {wrong_count}")
 
 # percentage correct
-if rounds_played > 0:
-    percentage = (correct_count / rounds_played) * 100
+if questions_asked > 0:
+    percentage = (correct_count / questions_asked) * 100
     print(f"Percentage Correct: {percentage:.2f}%")
 else:
     print("No questions were answered.")
-
-
-
-
-
