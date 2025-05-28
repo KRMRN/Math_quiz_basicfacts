@@ -41,7 +41,7 @@ def int_check(question):
 
 def get_operations():
     print("Choose operations you'd like to be tested on.")
-    print("Enter + for Addition, - for Subtraction, * for Multiplication, / for Division")
+    print("Enter + for Addition, - for Subtraction, * for Multiplication, / for Division, <enter> for all")
 
     valid_ops = ["+", "-", "*", "/"]
     while True:
