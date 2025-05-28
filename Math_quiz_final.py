@@ -52,7 +52,7 @@ def get_operations():
         if all(op in valid_ops for op in selected):
             return selected
         else:
-            print("Invalid input. Please enter valid operations like +,-,*,/")
+            print("Invalid input. Please enter valid operations like +,-,*,/ or <enter>")
 
 
 def generate_question(ops):
