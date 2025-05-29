@@ -65,7 +65,7 @@ def generate_question(ops):
     return question, answer
 
 # main routine
-print("Welcome to the Math Quiz\n")
+print("Welcome to MATH MANIACS \n")
 
 
 if string_checker("Do you want to see the instructions? ") == "yes":
@@ -123,9 +123,7 @@ while True:
 
     #quiz summary
     if string_checker("Do you want to see your quiz summary? (yes/no): ") == "yes":
-        print("\n=== Quiz Summary ===")
-        print(f"Operations Chosen: {' '.join(selected_ops)}")
-        print(f"Rounds Chosen: {rounds_display}")
+        print("Quiz Summary")
         print(f"Total Questions Answered: {questions_asked}")
         print(f"Correct: {correct_count} | Incorrect: {wrong_count}")
 
@@ -140,5 +138,5 @@ while True:
     #play again
     play_again = string_checker("\nDo you want to play again? (yes/no): ")
     if play_again == "no":
-        print("Thanks for playing the Math Quiz. Goodbye!")
+        print("Thanks for playing the MATH MANIACS. Goodbye!")
         break
