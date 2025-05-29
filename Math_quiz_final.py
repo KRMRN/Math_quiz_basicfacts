@@ -5,17 +5,16 @@ def string_checker(question, valid_ans=("yes", "no")):
     while True:
         user_response = input(question).lower()
         for item in valid_ans:
-            if item == user_response or user_response == item[0]:
+            if user_response == item or user_response == item[0]:
                 return item
         print(error)
         print()
 
-
 def instructions():
     print('''
  *** Instructions ***   
-You can choose how many questions you want to be tested on
-Answers are rounded to the nearest whole number
+You can choose how many questions you want to be tested on.
+Answers are rounded to the nearest whole number.
 The quiz includes:
   - Addition
   - Subtraction
@@ -28,7 +27,7 @@ def int_check(question):
         error = "Please enter an integer greater than 0."
         to_check = input(question)
         if to_check == "":
-            return "infinite"  # infinite mode
+            return "infinite"
         try:
             response = int(to_check)
             if response < 1:
@@ -37,7 +36,6 @@ def int_check(question):
                 return response
         except ValueError:
             print(error)
-
 
 def get_operations():
     print("Choose operations you'd like to be tested on.")
@@ -54,91 +52,93 @@ def get_operations():
         else:
             print("Invalid input. Please enter valid operations like +,-,*,/ or <enter>")
 
-
 def generate_question(ops):
     operation = random.choice(ops)
     num1 = random.randint(1, 10)
     num2 = random.randint(1, 10)
-    # make sure that answers are always positive
     if operation == '-':
         num1 = num1 + num2
-    # the divison would be clean
     if operation == '/':
         num1 = num1 * num2
     question = f"{num1} {operation} {num2}"
     answer = round(eval(question))
     return question, answer
 
-
-# Main routine starts here
+# main routine
 print("Welcome to the Math Quiz\n")
 
-# Ask user if they want instructions
+
 if string_checker("Do you want to see the instructions? ") == "yes":
     instructions()
 
-mode = "regular"
-correct_count = 0
-wrong_count = 0
-questions_asked = 0
-quiz_history = []
+while True:
+    mode = "regular"
+    correct_count = 0
+    wrong_count = 0
+    questions_asked = 0
 
-# Ask how many rounds the user wants
-num_rounds = int_check("How many rounds would you like? Press <enter> for infinite mode: ")
+    # Get number of rounds
+    rounds_input = int_check("How many rounds would you like? Press <enter> for infinite mode: ")
 
-if num_rounds == "infinite":
-    mode = "infinite"
-    num_rounds = 999999
-
-selected_ops = get_operations()
-
-# quiz loop
-while questions_asked < num_rounds:
-    if mode == "infinite":
-        print(f"\nRound {questions_asked + 1} (infinite mode)")
+    if rounds_input == "infinite":
+        num_rounds = 999999
+        rounds_display = "infinite mode"
     else:
-        print(f"\nRound {questions_asked + 1} of {num_rounds}")
+        num_rounds = rounds_input
+        rounds_display = f"{num_rounds} rounds"
 
-    question, correct_answer = generate_question(selected_ops)
-    print(f"What is {question}? (Type 'xxx' to quit)")
-    user_input = input("Your answer: ")
+    print(f"\n✅ You chose: {rounds_display}")
 
-    if user_input.lower() == "xxx":
+    selected_ops = get_operations()
+    print(f"✅ You chose the following operations: {' '.join(selected_ops)}")
+
+    #quiz loop
+    while questions_asked < num_rounds:
+        if rounds_display == "infinite mode":
+            print(f"\nRound {questions_asked + 1} (infinite mode)")
+        else:
+            print(f"\nRound {questions_asked + 1} of {num_rounds}")
+
+        question, correct_answer = generate_question(selected_ops)
+        print(f"What is {question}? (Type 'xxx' to quit)")
+        user_input = input("Your answer: ")
+
+        if user_input.lower() == "xxx":
+            break
+
+        try:
+            user_answer = int(round(float(user_input)))
+        except ValueError:
+            print("Invalid input. That counts as incorrect.")
+            user_answer = None
+
+        if user_answer == correct_answer:
+            print("Correct!\n")
+            correct_count += 1
+        else:
+            print(f"Incorrect. The correct answer was {correct_answer}\n")
+            wrong_count += 1
+
+        questions_asked += 1
+
+    #quiz summary
+    if string_checker("Do you want to see your quiz summary? (yes/no): ") == "yes":
+        print("\n=== Quiz Summary ===")
+        print(f"Operations Chosen: {' '.join(selected_ops)}")
+        print(f"Rounds Chosen: {rounds_display}")
+        print(f"Total Questions Answered: {questions_asked}")
+        print(f"Correct: {correct_count} | Incorrect: {wrong_count}")
+
+        if questions_asked > 0:
+            percentage = (correct_count / questions_asked) * 100
+            print(f"Percentage Correct: {percentage:.2f}%")
+        else:
+            print("No questions were answered.")
+    else:
+        print("Quiz summary skipped.")
+
+    #play again
+    play_again = string_checker("\nDo you want to play again? (yes/no): ")
+    if play_again == "no":
+        print("Thanks for playing the Math Quiz. Goodbye!")
         break
-
-    # Try to convert input to a number
-    try:
-        user_answer = int(round(float(user_input)))
-    except ValueError:
-        print("Invalid input. That counts as incorrect.")
-        user_answer = None
-
-    # Check if the answer is correct
-    if user_answer == correct_answer:
-        print("Correct!\n")
-        correct_count += 1
-        result = "Correct"
-    else:
-        print(f"Incorrect. The correct answer was {correct_answer}\n")
-        wrong_count += 1
-        result = "Incorrect"
-
-    questions_asked += 1
-    quiz_history.append({
-        "question": question,
-        "your_answer": user_answer,
-        "correct_answer": correct_answer,
-        "result": result
-    })
-
-# quiz summary
-print("\nQuiz Summary:")
-print(f"Total Questions Answered: {questions_asked}")
-print(f"Correct: {correct_count} | Incorrect: {wrong_count}")
-
-# percentage correct
-if questions_asked > 0:
-    percentage = (correct_count / questions_asked) * 100
-    print(f"Percentage Correct: {percentage:.2f}%")
-else:
-    print("No questions were answered.")
